@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Lil Mama ❤️</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+        }
+        
+        /* Background animation */
+        .bg-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .bg-heart {
+            position: absolute;
+            color: rgba(255, 77, 109, 0.2);
+            font-size: 20px;
+            animation: floatUp 20s infinite linear;
+        }
+        
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            margin-bottom: 40px;
+        }
+        
+        .main-title {
+            font-size: 3rem;
+            background: linear-gradient(45deg, #ff4d6d, #ff8fa3, #ffb3c1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(255, 77, 109, 0.3);
+        }
+        
+        .welcome-text {
+            color: #ffb3c1;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+        
+        /* Music Player - SIMPLE */
+        .music-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px auto;
+            max-width: 600px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .music-title {
+            color: #ff8fa3;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        .audio-player {
+            width: 100%;
+            margin: 15px 0;
+        }
+        
+        .music-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .music-btn {
+            background: linear-gradient(45deg, #ff4d6d, #ff8fa3);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .music-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+        }
+        
+        /* Gallery - SIMPLE */
+        .gallery-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 40px auto;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .gallery-title {
+            text-align: center;
+            color: #ff8fa3;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+        
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            padding: 10px;
+        }
+        
+        .photo-card {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .photo-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 77, 109, 0.2);
+            border-color: rgba(255, 77, 109, 0.5);
+        }
+        
+        .photo-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .photo-name {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        
+        .photo-desc {
+            color: #ffb3c1;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+        
+        /* Stick Figure Animation */
+        .animation-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 40px auto;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .animation-title {
+            color: #ff8fa3;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        #loveCanvas {
+            width: 100%;
+            height: 300px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .animation-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .anim-btn {
+            background: #4cc9f0;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .anim-btn:hover {
+            background: #3aa8d0;
+            transform: translateY(-3px);
+        }
+        
+        /* Love Messages */
+        .messages-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 40px auto;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .message-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #ff4d6d;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 40px;
+            color: #ffb3c1;
+        }
+        
+        .logout-btn {
+            background: linear-gradient(45deg, #ff4d6d, #ff8fa3);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logout-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 77, 109, 0.3);
+        }
+        
+        /* Secret Message */
+        .secret-msg {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 77, 109, 0.3);
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .secret-msg:hover {
+            background: rgba(255, 77, 109, 0.5);
+            transform: scale(1.05);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.2rem;
+            }
+            
+            .photo-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .music-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background hearts -->
+    <div class="bg-hearts" id="bgHearts"></div>
+    
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="main-title">❤️ For My Lil Mama ❤️</h1>
+            <p class="welcome-text">Welcome to our special place, where love never ends</p>
+            <p style="color: #ff8fa3;">Every moment with you is a precious memory</p>
+        </header>
+        
+        <!-- Music Player -->
+        <section class="music-box">
+            <h2 class="music-title"><i class="fas fa-music"></i> Our Love Song</h2>
+            <p>Play our special song in the background</p>
+            
+            <audio id="loveSong" class="audio-player" controls>
+                <source src="https://assets.mixkit.co/music/preview/mixkit-loving-you-117.mp3" type="audio/mpeg">
+                Your browser does not support audio
+            </audio>
+            
+            <div class="music-controls">
+                <button onclick="playSong()" class="music-btn">
+                    <i class="fas fa-play"></i> Play
+                </button>
+                <button onclick="pauseSong()" class="music-btn">
+                    <i class="fas fa-pause"></i> Pause
+                </button>
+                <button onclick="nextSong()" class="music-btn">
+                    <i class="fas fa-forward"></i> Next Song
+                </button>
+                <button onclick="volumeUp()" class="music-btn">
+                    <i class="fas fa-volume-up"></i> Louder
+                </button>
+                <button onclick="volumeDown()" class="music-btn">
+                    <i class="fas fa-volume-down"></i> Softer
+                </button>
+            </div>
+            
+            <p id="nowPlaying" style="margin-top: 15px; color: #ffb3c1;">
+                ♫ Now playing: "Loving You" ♫
+            </p>
+        </section>
+        
+        <!-- Picture Gallery -->
+        <section class="gallery-box">
+            <h2 class="gallery-title"><i class="fas fa-images"></i> Our Beautiful Memories</h2>
+            
+            <div class="photo-grid">
+                <!-- Photo 1 -->
+                <div class="photo-card" onclick="showMemory(1)">
+                    <div class="photo-icon" style="color: #ff4d6d;">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="photo-name">Our Love</div>
+                    <div class="photo-desc">Forever in my heart</div>
+                </div>
+                
+                <!-- Photo 2 -->
+                <div class="photo-card" onclick="showMemory(2)">
+                    <div class="photo-icon" style="color: #ff9a9e;">
+                        <i class="fas fa-sun"></i>
+                    </div>
+                    <div class="photo-name">Sunset Dreams</div>
+                    <div class="photo-desc">Beautiful evenings together</div>
+                </div>
+                
+                <!-- Photo 3 -->
+                <div class="photo-card" onclick="showMemory(3)">
+                    <div class="photo-icon" style="color: #a1c4fd;">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="photo-name">Starry Nights</div>
+                    <div class="photo-desc">Under the moonlight</div>
+                </div>
+                
+                <!-- Photo 4 -->
+                <div class="photo-card" onclick="showMemory(4)">
+                    <div class="photo-icon" style="color: #f6d365;">
+                        <i class="fas fa-mug-hot"></i>
+                    </div>
+                    <div class="photo-name">Coffee Dates</div>
+                    <div class="photo-desc">Morning conversations</div>
+                </div>
+                
+                <!-- Photo 5 -->
+                <div class="photo-card" onclick="showMemory(5)">
+                    <div class="photo-icon" style="color: #84fab0;">
+                        <i class="fas fa-umbrella-beach"></i>
+                    </div>
+                    <div class="photo-name">Beach Days</div>
+                    <div class="photo-desc">Sandy toes, happy hearts</div>
+                </div>
+                
+                <!-- Photo 6 -->
+                <div class="photo-card" onclick="showMemory(6)">
+                    <div class="photo-icon" style="color: #ff8fa3;">
+                        <i class="fas fa-film"></i>
+                    </div>
+                    <div class="photo-name">Movie Nights</div>
+                    <div class="photo-desc">Cuddles and popcorn</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Stick Figure Animation -->
+        <section class="animation-box">
+            <h2 class="animation-title"><i class="fas fa-heartbeat"></i> Our Love Story</h2>
+            <p>Watch our animated love story unfold</p>
+            
+            <canvas id="loveCanvas" width="800" height="300"></canvas>
+            
+            <div class="animation-controls">
+                <button onclick="startAnimation()" class="anim-btn">
+                    <i class="fas fa-play"></i> Play Story
+                </button>
+                <button onclick="pauseAnimation()" class="anim-btn">
+                    <i class="fas fa-pause"></i> Pause
+                </button>
+                <button onclick="resetAnimation()" class="anim-btn">
+                    <i class="fas fa-redo"></i> Restart
+                </button>
+            </div>
+        </section>
+        
+        <!-- Love Messages -->
+        <section class="messages-box">
+            <h2 class="gallery-title"><i class="fas fa-comment-heart"></i> Love Notes</h2>
+            
+            <div class="message-card">
+                <p><strong>My Dearest Lil Mama,</strong></p>
+                <p>Every day with you feels like a beautiful dream. You're my sunshine on cloudy days and my peace in chaos.</p>
+            </div>
+            
+            <div class="message-card">
+                <p><strong>To My Favorite Person,</strong></p>
+                <p>Your smile could light up the darkest room. Your laugh is my favorite melody in this world.</p>
+            </div>
+            
+            <div class="message-card">
+                <p><strong>My Promise to You,</strong></p>
+                <p>I promise to cherish every moment with you, to support you always, and to love you more each day.</p>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <p>This digital love letter was created just for you</p>
+            <p style="margin: 15px 0;">With all my love, forever and always</p>
+            
+            <button onclick="logout()" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Return to Login
+            </button>
+            
+            <p style="margin-top: 30px; font-style: italic; color: #ff8fa3;">
+                "You are the answer to every prayer I've ever whispered"
+            </p>
+        </footer>
+    </div>
+    
+    <!-- Secret Message Button -->
+    <div class="secret-msg" onclick="showSecretMessage()">
+        💕 Click for a secret
+    </div>
+    
+    <!-- Additional Audio for next song -->
+    <audio id="song2" style="display: none;">
+        <source src="https://assets.mixkit.co/music/preview/mixkit-sunny-love-song-116.mp3" type="audio/mpeg">
+    </audio>
+    
+    <script>
+        // ========== BACKGROUND HEARTS ==========
+        function createBackgroundHearts() {
+            const container = document.getElementById('bgHearts');
+            for (let i = 0; i < 40; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'bg-heart';
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDelay = Math.random() * 20 + 's';
+                heart.style.fontSize = (Math.random() * 15 + 10) + 'px';
+                container.appendChild(heart);
+            }
+        }
+        
+        // ========== MUSIC PLAYER ==========
+        let currentSong = 1;
+        const songs = [
+            { id: 'loveSong', name: 'Loving You' },
+            { id: 'song2', name: 'Sunny Love Song' }
+        ];
+        
+        function playSong() {
+            const audio = document.getElementById(songs[currentSong-1].id);
+            audio.play();
+            document.getElementById('nowPlaying').innerHTML = 
+                `♫ Now playing: "${songs[currentSong-1].name}" ♫`;
+        }
+        
+        function pauseSong() {
+            const audio = document.getElementById(songs[currentSong-1].id);
+            audio.pause();
+        }
+        
+        function nextSong() {
+            // Pause current song
+            const currentAudio = document.getElementById(songs[currentSong-1].id);
+            currentAudio.pause();
+            currentAudio.currentTime = 0;
+            
+            // Switch to next song
+            currentSong = currentSong === 1 ? 2 : 1;
+            
+            // Play new song
+            const newAudio = document.getElementById(songs[currentSong-1].id);
+            newAudio.play();
+            
+            document.getElementById('nowPlaying').innerHTML = 
+                `♫ Now playing: "${songs[currentSong-1].name}" ♫`;
+        }
+        
+        function volumeUp() {
+            const audio = document.getElementById(songs[currentSong-1].id);
+            if (audio.volume < 1) audio.volume += 0.1;
+        }
+        
+        function volumeDown() {
+            const audio = document.getElementById(songs[currentSong-1].id);
+            if (audio.volume > 0) audio.volume -= 0.1;
+        }
+        
+        // ========== PICTURE GALLERY ==========
+        function showMemory(number) {
+            const memories = [
+                "💖 Our Love 💖\n\nYou have my heart, now and forever.",
+                "🌅 Sunset Dreams 🌅\n\nThose golden hours with you are my favorite.",
+                "✨ Starry Nights ✨\n\nYou shine brighter than all the stars combined.",
+                "☕ Coffee Dates ☕\n\nEvery morning with you is a blessing.",
+                "🏖️ Beach Days 🏖️\n\nSandy toes and endless smiles with you.",
+                "🎬 Movie Nights 🎬\n\nThe best films are the ones we watch together."
+            ];
+            
+            alert(memories[number-1]);
+        }
+        
+        // ========== STICK FIGURE ANIMATION ==========
+        let animationRunning = false;
+        let animationId;
+        
+        function startAnimation() {
+            if (!animationRunning) {
+                animationRunning = true;
+                animateStickFigures();
+            }
+        }
+        
+        function pauseAnimation() {
+            animationRunning = false;
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+        }
+        
+        function resetAnimation() {
+            pauseAnimation();
+            const canvas = document.getElementById('loveCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawInitialScene();
+        }
+        
+        function drawInitialScene() {
+            const canvas = document.getElementById('loveCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Clear
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw background
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw stick figures
+            drawStickFigure(ctx, 200, 150, '#4cc9f0'); // Boy
+            drawStickFigure(ctx, 600, 150, '#ff4d6d'); // Girl
+            
+            // Draw heart between them
+            drawHeart(ctx, 400, 100, 20, '#ff4d6d');
+            
+            // Draw text
+            ctx.fillStyle = 'white';
+            ctx.font = '24px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Our Love Story', 400, 50);
+        }
+        
+        function drawStickFigure(ctx, x, y, color) {
+            ctx.save();
+            ctx.translate(x, y);
+            
+            // Head
+            ctx.beginPath();
+            ctx.arc(0, -30, 15, 0, Math.PI * 2);
+            ctx.fillStyle = color;
+            ctx.fill();
+            
+            // Body
+            ctx.beginPath();
+            ctx.moveTo(0, -15);
+            ctx.lineTo(0, 40);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            
+            // Arms
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(-30, 20);
+            ctx.moveTo(0, 0);
+            ctx.lineTo(30, 20);
+            ctx.stroke();
+            
+            // Legs
+            ctx.beginPath();
+            ctx.moveTo(0, 40);
+            ctx.lineTo(-20, 80);
+            ctx.moveTo(0, 40);
+            ctx.lineTo(20, 80);
+            ctx.stroke();
+            
+            ctx.restore();
+        }
+        
+        function drawHeart(ctx, x, y, size, color) {
+            ctx.save();
+            ctx.translate(x, y);
+            
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.bezierCurveTo(-size, -size/2, -size*2, -size/2, -size*2, size/2);
+            ctx.bezierCurveTo(-size*2, size*1.5, 0, size*2, 0, size*2);
+            ctx.bezierCurveTo(0, size*2, size*2, size*1.5, size*2, size/2);
+            ctx.bezierCurveTo(size*2, -size/2, size, -size/2, 0, 0);
+            
+            ctx.fillStyle = color;
+            ctx.fill();
+            
+            ctx.restore();
+        }
+        
+        let boyX = 200;
+        let girlX = 600;
+        let hearts = [];
+        
+        function animateStickFigures() {
+            const canvas = document.getElementById('loveCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Clear
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw background
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Move figures closer
+            if (boyX < 350) boyX += 1;
+            if (girlX > 450) girlX -= 1;
+            
+            // Draw stick figures
+            drawStickFigure(ctx, boyX, 150 + Math.sin(Date.now()/500)*10, '#4cc9f0');
+            drawStickFigure(ctx, girlX, 150 + Math.sin(Date.now()/500 + Math.PI)*10, '#ff4d6d');
+            
+            // Create hearts occasionally
+            if (Math.random() < 0.1) {
+                hearts.push({
+                    x: (boyX + girlX) / 2,
+                    y: 100,
+                    size: 10 + Math.random() * 10,
+                    speed: 1 + Math.random() * 2
+                });
+            }
+            
+            // Update and draw hearts
+            for (let i = hearts.length - 1; i >= 0; i--) {
+                const heart = hearts[i];
+                heart.y -= heart.speed;
+                
+                drawHeart(ctx, heart.x, heart.y, heart.size, '#ff4d6d');
+                
+                // Remove hearts that are off screen
+                if (heart.y < -50) {
+                    hearts.splice(i, 1);
+                }
+            }
+            
+            // Draw text
+            ctx.fillStyle = 'white';
+            ctx.font = '24px Arial';
+            ctx.textAlign = 'center';
+            
+            if (boyX >= 350 && girlX <= 450) {
+                ctx.fillText('❤️ Together Forever ❤️', 400, 50);
+                drawHeart(ctx, 400, 100, 20, '#ff4d6d');
+            } else {
+                ctx.fillText('Our Love Story', 400, 50);
+            }
+            
+            if (animationRunning) {
+                animationId = requestAnimationFrame(animateStickFigures);
+            }
+        }
+        
+        // ========== SECRET MESSAGE ==========
+        function showSecretMessage() {
+            const messages = [
+                "You're my favorite thought every morning 💭",
+                "My love for you grows stronger every day 🌱",
+                "You make my world brighter ☀️",
+                "Forever wouldn't be long enough with you ⏳",
+                "You're the best thing that ever happened to me 🎁"
+            ];
+            
+            const randomMsg = messages[Math.floor(Math.random() * messages.length)];
+            alert(`💌 Secret Message 💌\n\n${randomMsg}`);
+        }
+        
+        // ========== LOGOUT ==========
+        function logout() {
+            if (confirm('Are you sure you want to leave, Lil Mama?')) {
+                window.location.href = 'index.html';
+            }
+        }
+        
+        // ========== INITIALIZE EVERYTHING ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create background
+            createBackgroundHearts();
+            
+            // Start animation
+            drawInitialScene();
+            
+            // Auto-play song softly
+            setTimeout(() => {
+                const audio = document.getElementById('loveSong');
+                audio.volume = 0.3;
+                audio.play().catch(e => {
+                    console.log("Auto-play prevented");
+                });
+            }, 1000);
+            
+            // Add click hearts effect
+            document.addEventListener('click', function(e) {
+                if (Math.random() < 0.3) {
+                    const heart = document.createElement('div');
+                    heart.innerHTML = '❤️';
+                    heart.style.position = 'fixed';
+                    heart.style.left = e.pageX + 'px';
+                    heart.style.top = e.pageY + 'px';
+                    heart.style.fontSize = '20px';
+                    heart.style.color = '#ff4d6d';
+                    heart.style.pointerEvents = 'none';
+                    heart.style.zIndex = '1000';
+                    heart.style.animation = 'floatAway 1.5s ease-out forwards';
+                    
+                    document.body.appendChild(heart);
+                    
+                    setTimeout(() => heart.remove(), 1500);
+                    
+                    // Add animation if not exists
+                    if (!document.querySelector('#clickHeartStyle')) {
+                        const style = document.createElement('style');
+                        style.id = 'clickHeartStyle';
+                        style.textContent = `
+                            @keyframes floatAway {
+                                0% {
+                                    transform: translateY(0) scale(1);
+                                    opacity: 1;
+                                }
+                                100% {
+                                    transform: translateY(-100px) scale(0);
+                                    opacity: 0;
+                                }
+                            }
+                        `;
+                        document.head.appendChild(style);
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

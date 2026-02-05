@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Secret Place ❤️</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ffafbd, #ffc3a0);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Floating hearts background */
+        .floating-heart {
+            position: absolute;
+            color: rgba(255, 77, 109, 0.3);
+            font-size: 24px;
+            animation: float 15s infinite linear;
+            z-index: 1;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Login container */
+        .login-box {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .title {
+            font-size: 2.8rem;
+            color: #ff4d6d;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+        
+        .secret-question {
+            text-align: left;
+            margin: 25px 0;
+        }
+        
+        .secret-question label {
+            display: block;
+            color: #ff4d6d;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .secret-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ffccd5;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .secret-input:focus {
+            outline: none;
+            border-color: #ff4d6d;
+            box-shadow: 0 0 0 3px rgba(255, 77, 109, 0.2);
+        }
+        
+        .hint {
+            color: #ff85a1;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .login-btn {
+            background: linear-gradient(135deg, #ff4d6d, #ff8fa3);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 77, 109, 0.3);
+        }
+        
+        .message {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 500;
+            display: none;
+        }
+        
+        .success {
+            background: #e6ffe6;
+            color: #33cc33;
+            border: 1px solid #99ff99;
+            display: block;
+        }
+        
+        .error {
+            background: #ffe6e6;
+            color: #ff3333;
+            border: 1px solid #ff9999;
+            display: block;
+        }
+        
+        .footer-note {
+            margin-top: 30px;
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        /* Hearts animation */
+        .hearts-container {
+            margin: 30px 0;
+            height: 50px;
+            position: relative;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background hearts -->
+    <div id="backgroundHearts"></div>
+    
+    <div class="login-box">
+        <h1 class="title">❤️ Our Secret World ❤️</h1>
+        <p class="subtitle">A place where only we belong...</p>
+        
+        <div class="secret-question">
+            <label for="password">
+                <i class="fas fa-heart"></i> What do I love calling you?
+            </label>
+            <input 
+                type="text" 
+                id="password" 
+                class="secret-input"
+                placeholder="Type the secret name..."
+                autocomplete="off"
+            >
+            <p class="hint">
+                <i class="fas fa-lightbulb"></i> Hint: It's two words, starts with "lil"
+            </p>
+        </div>
+        
+        <button id="loginBtn" class="login-btn">
+            <i class="fas fa-unlock-alt"></i> Enter Our World
+        </button>
+        
+        <div id="message" class="message"></div>
+        
+        <div class="hearts-container" id="heartsContainer"></div>
+        
+        <div class="footer-note">
+            <p>Made with <i class="fas fa-heartbeat"></i> just for you</p>
+        </div>
+    </div>
+    
+    <script>
+        // Create background hearts
+        function createBackgroundHearts() {
+            const container = document.getElementById('backgroundHearts');
+            for (let i = 0; i < 30; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDelay = Math.random() * 15 + 's';
+                heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                container.appendChild(heart);
+            }
+        }
+        
+        // Login logic
+        document.addEventListener('DOMContentLoaded', function() {
+            createBackgroundHearts();
+            
+            const loginBtn = document.getElementById('loginBtn');
+            const passwordInput = document.getElementById('password');
+            const messageDiv = document.getElementById('message');
+            
+            // Auto-focus on input
+            passwordInput.focus();
+            
+            // Correct password
+            const CORRECT_PASSWORD = "lil mama";
+            
+            loginBtn.addEventListener('click', function() {
+                const userInput = passwordInput.value.trim().toLowerCase();
+                
+                if (userInput === CORRECT_PASSWORD) {
+                    // Success!
+                    messageDiv.textContent = "Welcome home, Lil Mama! ❤️";
+                    messageDiv.className = "message success";
+                    
+                    // Create celebration hearts
+                    createCelebrationHearts();
+                    
+                    // Redirect after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = "main.html";
+                    }, 2000);
+                    
+                } else {
+                    // Wrong password
+                    messageDiv.textContent = "That's not right, sweetheart! Try again. 💔";
+                    messageDiv.className = "message error";
+                    
+                    // Shake animation
+                    passwordInput.style.animation = "shake 0.5s";
+                    setTimeout(() => {
+                        passwordInput.style.animation = "";
+                    }, 500);
+                    
+                    // Clear and refocus
+                    passwordInput.value = "";
+                    passwordInput.focus();
+                }
+            });
+            
+            // Allow Enter key
+            passwordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    loginBtn.click();
+                }
+            });
+            
+            // Celebration hearts
+            function createCelebrationHearts() {
+                const container = document.getElementById('heartsContainer');
+                container.innerHTML = '';
+                
+                for (let i = 0; i < 15; i++) {
+                    setTimeout(() => {
+                        const heart = document.createElement('div');
+                        heart.innerHTML = '❤️';
+                        heart.style.position = 'absolute';
+                        heart.style.left = '50%';
+                        heart.style.fontSize = '24px';
+                        heart.style.color = '#ff4d6d';
+                        heart.style.opacity = '0';
+                        heart.style.transform = 'translateX(-50%)';
+                        heart.style.animation = `heartFloat 2s ease-out ${i * 0.1}s forwards`;
+                        container.appendChild(heart);
+                    }, i * 100);
+                }
+                
+                // Add animation
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes heartFloat {
+                        0% {
+                            opacity: 0;
+                            transform: translateX(-50%) translateY(0) scale(0);
+                        }
+                        50% {
+                            opacity: 1;
+                            transform: translateX(-50%) translateY(-20px) scale(1);
+                        }
+                        100% {
+                            opacity: 0;
+                            transform: translateX(-50%) translateY(-40px) scale(0);
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        });
+    </script>
+</body>
+</html>
