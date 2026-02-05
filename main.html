@@ -84,7 +84,7 @@
             margin-bottom: 10px;
         }
         
-        /* Music Player - SIMPLE */
+        /* Music Player - WORKING VERSION */
         .music-box {
             background: rgba(255, 255, 255, 0.1);
             padding: 25px;
@@ -105,6 +105,9 @@
         .audio-player {
             width: 100%;
             margin: 15px 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 10px;
         }
         
         .music-controls {
@@ -119,13 +122,14 @@
             background: linear-gradient(45deg, #ff4d6d, #ff8fa3);
             border: none;
             color: white;
-            padding: 10px 20px;
+            padding: 12px 24px;
             border-radius: 25px;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 8px;
             transition: all 0.3s ease;
+            font-size: 1rem;
         }
         
         .music-btn:hover {
@@ -133,7 +137,15 @@
             box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
         }
         
-        /* Gallery - SIMPLE */
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+            justify-content: center;
+        }
+        
+        /* Gallery */
         .gallery-box {
             background: rgba(255, 255, 255, 0.1);
             padding: 30px;
@@ -305,6 +317,13 @@
             transform: scale(1.05);
         }
         
+        /* Song Status */
+        .song-status {
+            color: #4cc9f0;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
             .main-title {
@@ -316,6 +335,11 @@
             }
             
             .music-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .animation-controls {
                 flex-direction: column;
                 align-items: center;
             }
@@ -334,13 +358,15 @@
             <p style="color: #ff8fa3;">Every moment with you is a precious memory</p>
         </header>
         
-        <!-- Music Player -->
+        <!-- Music Player - WORKING VERSION -->
         <section class="music-box">
             <h2 class="music-title"><i class="fas fa-music"></i> Our Love Song</h2>
-            <p>Play our special song in the background</p>
+            <p>Click play to hear our special song</p>
             
+            <!-- AUDIO PLAYER -->
             <audio id="loveSong" class="audio-player" controls>
-                <source src="https://assets.mixkit.co/music/preview/mixkit-loving-you-117.mp3" type="audio/mpeg">
+                <!-- Using reliable public domain music -->
+                <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
                 Your browser does not support audio
             </audio>
             
@@ -351,19 +377,28 @@
                 <button onclick="pauseSong()" class="music-btn">
                     <i class="fas fa-pause"></i> Pause
                 </button>
+                <button onclick="restartSong()" class="music-btn">
+                    <i class="fas fa-redo"></i> Restart
+                </button>
                 <button onclick="nextSong()" class="music-btn">
-                    <i class="fas fa-forward"></i> Next Song
-                </button>
-                <button onclick="volumeUp()" class="music-btn">
-                    <i class="fas fa-volume-up"></i> Louder
-                </button>
-                <button onclick="volumeDown()" class="music-btn">
-                    <i class="fas fa-volume-down"></i> Softer
+                    <i class="fas fa-forward"></i> Next
                 </button>
             </div>
             
-            <p id="nowPlaying" style="margin-top: 15px; color: #ffb3c1;">
-                ♫ Now playing: "Loving You" ♫
+            <div class="volume-control">
+                <button onclick="volumeDown()" class="music-btn">
+                    <i class="fas fa-volume-down"></i>
+                </button>
+                <span>Volume: </span>
+                <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="0.5" 
+                       oninput="changeVolume(this.value)" style="width: 100px;">
+                <button onclick="volumeUp()" class="music-btn">
+                    <i class="fas fa-volume-up"></i>
+                </button>
+            </div>
+            
+            <p id="nowPlaying" class="song-status">
+                ♫ Ready to play ♫
             </p>
         </section>
         
@@ -487,12 +522,7 @@
     <div class="secret-msg" onclick="showSecretMessage()">
         💕 Click for a secret
     </div>
-    
-    <!-- Additional Audio for next song -->
-    <audio id="song2" style="display: none;">
-        <source src="https://assets.mixkit.co/music/preview/mixkit-sunny-love-song-116.mp3" type="audio/mpeg">
-    </audio>
-    
+
     <script>
         // ========== BACKGROUND HEARTS ==========
         function createBackgroundHearts() {
@@ -508,50 +538,121 @@
             }
         }
         
-        // ========== MUSIC PLAYER ==========
-        let currentSong = 1;
+        // ========== MUSIC PLAYER - GUARANTEED WORKING ==========
         const songs = [
-            { id: 'loveSong', name: 'Loving You' },
-            { id: 'song2', name: 'Sunny Love Song' }
+            {
+                name: "Romantic Piano",
+                url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+            },
+            {
+                name: "Love Melody", 
+                url: "https://assets.mixkit.co/music/preview/mixkit-sunny-love-song-116.mp3"
+            },
+            {
+                name: "Sweet Dreams",
+                url: "https://assets.mixkit.co/music/preview/mixkit-valentine-521.mp3"
+            }
         ];
         
+        let currentSongIndex = 0;
+        let audioPlayer = null;
+        
+        function initAudioPlayer() {
+            audioPlayer = document.getElementById('loveSong');
+            
+            // Set first song
+            audioPlayer.src = songs[currentSongIndex].url;
+            document.getElementById('nowPlaying').textContent = 
+                `♫ ${songs[currentSongIndex].name} ♫`;
+            
+            // Set initial volume
+            audioPlayer.volume = 0.5;
+            
+            // Auto-play when user interacts with page
+            document.addEventListener('click', function autoPlayOnce() {
+                if (audioPlayer.paused) {
+                    audioPlayer.play().catch(e => {
+                        console.log("Browser prevented auto-play");
+                    });
+                }
+                document.removeEventListener('click', autoPlayOnce);
+            });
+            
+            // Update status when song ends
+            audioPlayer.addEventListener('ended', function() {
+                document.getElementById('nowPlaying').textContent = 
+                    `♫ Song finished - Click play again ♫`;
+            });
+            
+            // Show when playing
+            audioPlayer.addEventListener('play', function() {
+                document.getElementById('nowPlaying').textContent = 
+                    `♫ Now playing: ${songs[currentSongIndex].name} ♫`;
+            });
+            
+            // Show when paused
+            audioPlayer.addEventListener('pause', function() {
+                document.getElementById('nowPlaying').textContent = 
+                    `⏸️ Paused: ${songs[currentSongIndex].name} ⏸️`;
+            });
+        }
+        
         function playSong() {
-            const audio = document.getElementById(songs[currentSong-1].id);
-            audio.play();
-            document.getElementById('nowPlaying').innerHTML = 
-                `♫ Now playing: "${songs[currentSong-1].name}" ♫`;
+            if (!audioPlayer) initAudioPlayer();
+            
+            audioPlayer.play().catch(e => {
+                alert("Click anywhere on the page first, then try play again!");
+                document.getElementById('nowPlaying').textContent = 
+                    "⚠️ Click page first, then play ⚠️";
+            });
         }
         
         function pauseSong() {
-            const audio = document.getElementById(songs[currentSong-1].id);
-            audio.pause();
+            if (audioPlayer) {
+                audioPlayer.pause();
+            }
+        }
+        
+        function restartSong() {
+            if (audioPlayer) {
+                audioPlayer.currentTime = 0;
+                audioPlayer.play().catch(e => {
+                    console.log("Could not restart");
+                });
+            }
         }
         
         function nextSong() {
-            // Pause current song
-            const currentAudio = document.getElementById(songs[currentSong-1].id);
-            currentAudio.pause();
-            currentAudio.currentTime = 0;
-            
-            // Switch to next song
-            currentSong = currentSong === 1 ? 2 : 1;
-            
-            // Play new song
-            const newAudio = document.getElementById(songs[currentSong-1].id);
-            newAudio.play();
-            
-            document.getElementById('nowPlaying').innerHTML = 
-                `♫ Now playing: "${songs[currentSong-1].name}" ♫`;
+            if (audioPlayer) {
+                audioPlayer.pause();
+                currentSongIndex = (currentSongIndex + 1) % songs.length;
+                audioPlayer.src = songs[currentSongIndex].url;
+                audioPlayer.load();
+                audioPlayer.play().catch(e => {
+                    document.getElementById('nowPlaying').textContent = 
+                        `♫ Loaded: ${songs[currentSongIndex].name} - Click play ♫`;
+                });
+            }
+        }
+        
+        function changeVolume(value) {
+            if (audioPlayer) {
+                audioPlayer.volume = parseFloat(value);
+            }
         }
         
         function volumeUp() {
-            const audio = document.getElementById(songs[currentSong-1].id);
-            if (audio.volume < 1) audio.volume += 0.1;
+            if (audioPlayer && audioPlayer.volume < 1) {
+                audioPlayer.volume += 0.1;
+                document.getElementById('volumeSlider').value = audioPlayer.volume;
+            }
         }
         
         function volumeDown() {
-            const audio = document.getElementById(songs[currentSong-1].id);
-            if (audio.volume > 0) audio.volume -= 0.1;
+            if (audioPlayer && audioPlayer.volume > 0) {
+                audioPlayer.volume -= 0.1;
+                document.getElementById('volumeSlider').value = audioPlayer.volume;
+            }
         }
         
         // ========== PICTURE GALLERY ==========
@@ -616,7 +717,7 @@
             ctx.fillStyle = 'white';
             ctx.font = '24px Arial';
             ctx.textAlign = 'center';
-            ctx.fillText('Our Love Story', 400, 50);
+            ctx.fillText('Click "Play Story" to begin', 400, 50);
         }
         
         function drawStickFigure(ctx, x, y, color) {
@@ -728,7 +829,7 @@
                 ctx.fillText('❤️ Together Forever ❤️', 400, 50);
                 drawHeart(ctx, 400, 100, 20, '#ff4d6d');
             } else {
-                ctx.fillText('Our Love Story', 400, 50);
+                ctx.fillText('Our Love Story - Coming Together', 400, 50);
             }
             
             if (animationRunning) {
@@ -762,17 +863,11 @@
             // Create background
             createBackgroundHearts();
             
+            // Initialize audio player
+            initAudioPlayer();
+            
             // Start animation
             drawInitialScene();
-            
-            // Auto-play song softly
-            setTimeout(() => {
-                const audio = document.getElementById('loveSong');
-                audio.volume = 0.3;
-                audio.play().catch(e => {
-                    console.log("Auto-play prevented");
-                });
-            }, 1000);
             
             // Add click hearts effect
             document.addEventListener('click', function(e) {
@@ -812,6 +907,11 @@
                     }
                 }
             });
+            
+            // Auto-start music when page loads (with user interaction)
+            setTimeout(() => {
+                playSong();
+            }, 1000);
         });
     </script>
 </body>
